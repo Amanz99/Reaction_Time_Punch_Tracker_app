@@ -1,0 +1,166 @@
+ScreenManager:
+    id: scr
+    Home:
+        name: "home"
+    Result:
+        name: "result"
+
+<Home>:
+    name: 'home'
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: "PunchTime Response Tracker"
+            md_bg_color: .5,.5,.5,0.5
+
+        MDBottomNavigation:
+            selected_color_background: "lightgray"
+            text_color_active: "white"
+            text_color_normal: 'white'
+            panel_color: .5,.5,.5,1
+            MDBottomNavigationItem:
+                name: "home1"
+                icon: 'home'
+                text: 'Home'
+                MDBoxLayout:
+                    padding: 50, 50
+                    orientation: 'vertical'
+                    spacing: 50
+                    md_bg_color: 'lightgrey'
+                    MDCard:
+                        padding: 75, 50
+                        size_hint_x: 0.6
+                        pos_hint: {'center_x':0.5}
+                        MDLabel:
+                            text: 'Welcome to the Punch Reflex tracker \nYou will be prompted to throw 5 punches one after another to recieve your average reflex time, measured in seconds(s) \n Your response time is calculated through the detection of the sound generated when striking a surface'
+                            bold: True
+                            font_size: self.width*0.05+self.height*0.01
+
+                    MDCard:
+                        padding: 75, 50
+                        size_hint_x: 0.6
+                        adaptive_height: True
+                        pos_hint: {'center_x':0.5}
+                        MDLabel:
+                            text: '-Ensure you are in a quiet space \n-The punch wont be detected unless you strike a surface \n-Make Sure your primary microphone is set to defualt'
+                            bold:  True
+                            font_size: (self.width+self.height)*0.04
+                            size_hint_y: None
+
+                    MDRaisedButton:
+                        text: 'Record Response Speed'
+                        pos_hint: {'center_x': 0.5}
+                        on_press:  root.run_punch()
+
+            MDBottomNavigationItem:
+                id: scr2
+                name: "screen 2"
+                icon: 'chart-bell-curve-cumulative'
+                text: 'Tracker'
+                on_enter: root._kv_post()
+                on_leave: root.leave()
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    spacing: 30
+                    padding: 50, 20
+                    MDLabel:
+                        text: 'Tracker'
+                        bold: True
+                        halign: 'center'
+                        font_size: (self.width+self.height)*0.04
+                        size_hint_y: None
+                    MDBoxLayout:
+                        id: datatable
+
+
+
+            MDBottomNavigationItem:
+                name: "exit"
+                icon: 'logout'
+                text: 'Exit'
+                on_tab_release: app.root.get_screen('home').show_exit_confirmation()
+
+<Result>:
+    name: 'result'
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: "PunchTime Reflex Tracker"
+            md_bg_color: .5,.5,.5,0.5
+
+
+        MDBoxLayout:
+            padding: 50, 50
+            orientation: 'vertical'
+            spacing: 50
+            md_bg_color: 'lightgrey'
+
+            MDLabel:
+                text: 'Punch as soon as you hear the beep!'
+                bold: True
+                font_size: self.width*0.05+self.height*0.02
+                halign: 'center'
+            MDSpinner:
+                size_hint: None, None
+                size: dp(46), dp(46)
+                pos_hint: {'center_x': .5, 'center_y': .5}
+            Widget:
+            MDCard:
+                padding: 100, 50
+                size_hint: 0.6,0.2
+                adaptive_height: True
+                pos_hint: {'center_x':0.5}
+                MDLabel:
+                    id: _punch_no
+                    text: root.punch_no
+                    bold:  True
+                    font_size: self.width*0.08+self.height*0.05
+                    halign: 'center'
+            MDBoxLayout:
+                orientation: 'vertical'
+                spacing: 50
+                MDRaisedButton:
+                    text: 'Show Result'
+                    pos_hint: {'center_x': 0.5}
+                    size_hint_x: 0.35
+                    on_press: root.show_result_dialog() if root.btn else ''
+                MDRectangleFlatButton:
+                    text: 'Back'
+                    pos_hint: {'center_x': 0.5}
+                    size_hint_x: 0.35
+                    on_press: app.root.current='home' if root.btn else None
+            Widget:
+
+<Content>
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "150dp"
+    md_bg_color: 'grey'
+    MDLabel:
+        text: 'Average reflex Time'
+        bold: True
+        halign: 'center'
+        font_size: '25dp'
+    MDSeparator:
+    MDLabel:
+        id: avg_reflex
+        text: ''
+        bold: True
+        halign: 'center'
+        font_size: '20dp'
+
+    Widget:
+    MDLabel:
+        text: 'Individual reflex Times'
+        bold: True
+        halign: 'center'
+        font_size: '25dp'
+    MDSeparator:
+    MDLabel:
+        id: result_reflex
+        text: ''
+        bold: True
+        halign: 'center'
+        font_size: '20dp'
+
